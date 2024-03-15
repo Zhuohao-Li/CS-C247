@@ -12,8 +12,7 @@ class Permute(nn.Module):
 ################################################################
 ''' GRU'''
 
-<<<<<<< HEAD
-=======
+
 class ResNetGRU(nn.Module):
     def __init__(self, dropout_rate=0.5, pretrained=True):
         super(ResNetGRU, self).__init__()
@@ -76,7 +75,7 @@ class ResNetGRU(nn.Module):
         out = self.fc(out[:, -1, :])  # This simplifies to maintaining the shape (N, feature_size)
 
         return out
->>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
+
 
 
 ################################################################
@@ -194,7 +193,7 @@ class Attention(nn.Module):
 
 
 ######################################################     
-<<<<<<< HEAD
+
         
 
 
@@ -204,8 +203,7 @@ class Attention(nn.Module):
 
 
 ################################
-=======
->>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
+
 
 ##############################
 # Make numpy values easier to read.
@@ -361,7 +359,7 @@ def RaSCNN(inputshape, outputshape, params=None):
 
 
 
-<<<<<<< HEAD
+
 # import tensorflow as tf
 # from tensorflow import keras
 # from tensorflow.keras import layers
@@ -431,7 +429,5 @@ def RaSCNN(inputshape, outputshape, params=None):
 #     return keras.models.Model(inputs, outs)
 
 
-=======
->>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
 
     
