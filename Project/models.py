@@ -9,9 +9,77 @@ DROPOUT = 0.5
 class Permute(nn.Module):
     def forward(self, x):
         return x.permute(0, 2, 1, 3)
+################################################################
+''' GRU'''
+
+<<<<<<< HEAD
+=======
+class ResNetGRU(nn.Module):
+    def __init__(self, dropout_rate=0.5, pretrained=True):
+        super(ResNetGRU, self).__init__()
+
+        # Load a pretrained ResNet and remove the fully connected layer
+        self.resnet = models.resnet18(pretrained=pretrained)
+        self.resnet.fc = nn.Identity()
+
+        # Assuming resnet18 outputs 512 features
+        resnet_features = 512
+
+        # GRU Layer
+        self.gru = nn.GRU(resnet_features, 128, 3, batch_first=True, dropout=dropout_rate)
+        # self.gru = nn.GRU(resnet_features, 64, 3, batch_first=True, dropout=dropout_rate)
+        # # Fully Connected Layer
+        # self.fc = nn.Sequential(
+        #     nn.Linear(64, 54),
+        #     # nn.BatchNorm1d(54, eps=1e-05, momentum=0.2, affine=True),
+        #     nn.LayerNorm(54),  # Apply LayerNorm
+        #     nn.ReLU(inplace=True),
+        #     nn.Dropout(p=dropout_rate),
+        #     nn.Linear(54, 32),
+        #     nn.LayerNorm(32),  # Apply LayerNorm
+        #     # nn.BatchNorm1d(32, eps=1e-05, momentum=0.2, affine=True),
+        #     nn.ReLU(inplace=True),
+        #     nn.Linear(32, 4)
+        # )
+        self.fc = nn.Sequential(
+          nn.Linear(128, 64),
+          nn.LayerNorm(64),  # Apply LayerNorm
+          nn.ReLU(inplace=True),
+          nn.Dropout(p=dropout_rate),
+          nn.Linear(64, 32),
+          nn.LayerNorm(32),  # Apply LayerNorm
+          nn.ReLU(inplace=True),
+          nn.Dropout(p=dropout_rate),
+          nn.Linear(32, 16),
+          nn.LayerNorm(16),  # Apply LayerNorm
+          nn.ReLU(inplace=True),
+          nn.Linear(16, 4)
+        )
+
+    def forward(self, x):
+        # print("asdadsda\n\n")
+        # print(x.size())
+        x = x.repeat(1, 3, 1, 1)  # Repeats the channel dimension 3 times
+        # print(x.size())
+    # Directly use ResNet on the input x with shape (N, C, H, W)
+        c_out = self.resnet(x)  # Output shape: (N, feature_size)
+
+        # Introduce a sequence length dimension for GRU processing
+        # After ResNet, reshape c_out to add a sequence length of 1: (N, 1, feature_size)
+        r_out = c_out.unsqueeze(1)
+
+        # GRU processing
+        out, _ = self.gru(r_out)
+
+        # Fully Connected Layer processing
+        # Take the output of the last (and only) time step
+        out = self.fc(out[:, -1, :])  # This simplifies to maintaining the shape (N, feature_size)
+
+        return out
+>>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
 
 
-
+################################################################
 '''
 LSTM
 '''
@@ -126,6 +194,7 @@ class Attention(nn.Module):
 
 
 ######################################################     
+<<<<<<< HEAD
         
 
 
@@ -135,6 +204,8 @@ class Attention(nn.Module):
 
 
 ################################
+=======
+>>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
 
 ##############################
 # Make numpy values easier to read.
@@ -290,6 +361,7 @@ def RaSCNN(inputshape, outputshape, params=None):
 
 
 
+<<<<<<< HEAD
 # import tensorflow as tf
 # from tensorflow import keras
 # from tensorflow.keras import layers
@@ -359,5 +431,7 @@ def RaSCNN(inputshape, outputshape, params=None):
 #     return keras.models.Model(inputs, outs)
 
 
+=======
+>>>>>>> a1bbad06d0b0e6c1e16f11dc14ab7b284e5d8555
 
     
